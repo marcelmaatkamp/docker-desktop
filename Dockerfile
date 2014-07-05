@@ -17,16 +17,21 @@
 # Date: 07/28/2013
 
 
-FROM ubuntu:12.10
+FROM ubuntu:14.04
 MAINTAINER Roberto G. Hashioka "roberto_hashioka@hotmail.com"
 
 RUN apt-get update
-
-# Set the env variable DEBIAN_FRONTEND to noninteractive
+RUN apt-get dist-upgrade -f -y
 ENV DEBIAN_FRONTEND noninteractive
 
-# Installing the environment required: xserver, xdm, flux box, roc-filer and ssh
-RUN apt-get install -y xpra rox-filer ssh pwgen xserver-xephyr xdm fluxbox sudo
+RUN apt-get install -y curl
+RUN curl http://winswitch.org/gpg.asc | apt-key add -
+RUN echo "deb http://winswitch.org/ trusty main" > /etc/apt/sources.list.d/winswitch.list;
+RUN apt-get update;
+RUN apt-get install -y winswitch xpra xvfb
+RUN apt-get install -y avahi-utils python-avahi libavahi-core-dev python-netifaces rox-filer ssh pwgen xserver-xephyr xdm fluxbox sudo
+RUN apt-get install -y libreoffice-base firefox libreoffice-gtk libreoffice-calc xterm
+RUN apt-get install -y rox-filer ssh pwgen xserver-xephyr xdm fluxbox sudo
 
 # Configuring xdm to allow connections from any IP address and ssh to allow X11 Forwarding. 
 RUN sed -i 's/DisplayManager.requestPort/!DisplayManager.requestPort/g' /etc/X11/xdm/xdm-config
