@@ -48,6 +48,10 @@ RUN echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-
 RUN echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 RUN apt-get -y install oracle-java7-installer
 
+RUN curl -s get.gvmtool.net | bash
+RUN source "/root/.gvm/bin/gvm-init.sh"
+RUN gvm install gradle
+
 ADD . /src
 
 EXPOSE 22
